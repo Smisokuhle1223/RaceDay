@@ -42,6 +42,10 @@ See `/docs/ERD.png` for the full diagram and `/docs/RaceDay_Schema.sql` for the 
 - A **Participant** (User) makes many **Enrolments**.
 - A **Category** receives many **Enrolments**.
 - An **Enrolment** produces at most one **Result**.
+
+## Why These Six Entities
+
+Venues and Categories were each given their own table rather than folded into Events. Venues are reusable — the same stadium or starting point can host multiple events over time, so it made sense to store it once and reference it, rather than repeating venue details on every event. Categories were separated because a single Event typically offers several distances (e.g. a 10km and a half marathon under one event), and each needs its own capacity, entry fee, and enrolments tracked independently.
 ## Design Assumptions
 
 A few deliberate decisions were made while planning the schema:
