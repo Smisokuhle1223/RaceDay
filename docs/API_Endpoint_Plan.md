@@ -1,5 +1,6 @@
 # RaceDay – API Endpoint Plan
 
+> Route naming convention: all resource names are plural and lowercase (e.g. `/api/events`, `/api/categories`), nested resources follow `/api/{parent}/{id}/{child}`, and IDs are always path parameters, never query strings.
 Planned before any API code is written, in line with Part 1 Section B. Covers Authentication, User Profile, Events, Categories, Event Enrolments, and Results, matching the ERD in `ERD.png` and the schema in `RaceDay_Schema.sql`.
 
 ## Authentication
