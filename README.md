@@ -15,6 +15,8 @@ Organisers use RaceDay to create events, add participation categories to each ev
 | **Organiser** | Create, edit, and delete events; manage event categories; capture participant results; view all enrolments for their events. |
 | **Participant** | Create an account; browse events; enter an event by selecting a category; view their own enrolments; track their personal results history. |
 
+A user's role is chosen when they register and determines what they can see and do throughout the system. An Organiser only ever manages their own events — they cannot edit or delete events created by another Organiser. A Participant can browse and enter any event, but can only view and manage their own enrolments and results, not anyone else's.
+
 ## Repository Structure
 
 ```
