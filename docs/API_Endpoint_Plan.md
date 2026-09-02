@@ -40,7 +40,7 @@ Planned before any API code is written, in line with Part 1 Section B. Covers Au
 
 | HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
 |---|---|---|---|---|---|
-| POST | /api/categories/{id}/enrolments | Enrols the logged-in participant into a specific category. | Participant | None | 201 Created – enrolment record. 400 Bad Request – category full. 404 Not Found. 409 Conflict – already enrolled. |
+| POST | /api/categories/{id}/enrolments | Enrols the currently logged-in participant into the specified category, provided space is still available. | Participant | None | 201 Created – enrolment record. 400 Bad Request – category full. 404 Not Found. 409 Conflict – already enrolled. |
 | GET | /api/enrolments/my | Returns the logged-in participant's own enrolment history. | Participant | None | 200 OK – array of the participant's enrolments. |
 | GET | /api/events/{id}/enrolments | Returns all enrolments for an event, for the organiser to manage. | Organiser (owner) | None | 200 OK – array of enrolments. 403 Forbidden. 404 Not Found. |
 | DELETE | /api/enrolments/{id} | Cancels the logged-in participant's own enrolment. | Participant (owner) | None | 200 OK. 403 Forbidden. 404 Not Found. |
@@ -50,6 +50,6 @@ Planned before any API code is written, in line with Part 1 Section B. Covers Au
 | HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
 |---|---|---|---|---|---|
 | POST | /api/enrolments/{id}/results | Captures a race result against a participant's enrolment. | Organiser | `{ finishTime, position, status }` | 201 Created – new result. 400 Bad Request. 403 Forbidden. 404 Not Found. 409 Conflict – result already captured. |
-| GET | /api/enrolments/{id}/results | Returns the result for a specific enrolment. | Any (owning participant or event organiser) | None | 200 OK – result. 403 Forbidden. 404 Not Found – no result yet. |
-| GET | /api/users/{id}/results | Returns a participant's full personal performance history across all events. | Participant (owner) or Organiser | None | 200 OK – array of results. 403 Forbidden. |
+| GET | /api/enrolments/{id}/results | Returns the captured result for a specific enrolment, visible only to the participant who owns it or the organiser of the event. | Any (owning participant or event organiser) | None | 200 OK – result. 403 Forbidden. 404 Not Found – no result yet. | |
+| GET | /api/users/{id}/results | Returns a participant's complete performance history — every result they've received across all events they've entered. | Participant (owner) or Organiser | None | 200 OK – array of results. 403 Forbidden. | |
 | PUT | /api/results/{id} | Corrects/updates an already captured result. | Organiser | `{ finishTime, position, status }` | 200 OK – updated result. 403 Forbidden. 404 Not Found. |
