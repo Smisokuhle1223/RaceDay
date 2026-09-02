@@ -41,7 +41,15 @@ A few deliberate decisions were made while planning the schema:
 - **Deleting an Event cascades to its Categories, and deleting an Enrolment cascades to its Result.** This avoids orphaned records that reference a parent that no longer exists.
 - **Passwords are never stored in plain text.** The `PasswordHash` column is intended to store a hashed value, to be implemented properly in Part 2 during API development.
 ## Setup Instructions
+## Known Limitations (Part 1)
 
+This part covers planning and the database only. The following are intentionally out of scope for now and will be addressed in later parts:
+
+- No payment processing for entry fees — `EntryFee` is stored, but no payment gateway integration exists yet.
+- No image uploads for events or venues.
+- No password hashing implementation yet — the `PasswordHash` column exists in the schema, but the actual hashing logic is part of the Part 2 authentication API.
+- No live weather or route API integration yet — `Latitude`/`Longitude` on Venues are in place to support this in a later part.
+- Category capacity limits are not yet enforced anywhere; this will be handled in the Part 2 API logic.
 1. **Clone the repository**
    ```
    git clone <this-repo-url>
