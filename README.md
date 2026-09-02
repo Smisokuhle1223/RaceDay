@@ -31,7 +31,15 @@ README.md                 - This file
 The database has six entities: **Users**, **Venues**, **Events**, **Categories**, **Enrolments**, and **Results**. Users hold both Organisers and Participants, distinguished by a `Role` column. An Organiser creates Events at a Venue; each Event has one or more Categories (e.g. distances); Participants enrol in a Category, and each Enrolment can produce one Result once the event has been run.
 
 See `/docs/ERD.png` for the full diagram and `/docs/RaceDay_Schema.sql` for the script that creates and seeds the schema.
+## Design Assumptions
 
+A few deliberate decisions were made while planning the schema:
+
+- **One Result per Enrolment.** An Enrolment can produce at most one Result, enforced with a `UNIQUE` constraint on `Results.EnrolmentID`. This matches how a single race entry produces a single outcome.
+- **Category capacity is not enforced at the database level.** `MaxParticipants` on Categories is a target the application layer will check against the enrolment count before allowing a new sign-up; the database itself does not block over-enrolment.
+- **A participant cannot enrol in the same category twice.** Enforced with a `UNIQUE (ParticipantID, CategoryID)` constraint on Enrolments, to prevent accidental duplicate entries.
+- **Deleting an Event cascades to its Categories, and deleting an Enrolment cascades to its Result.** This avoids orphaned records that reference a parent that no longer exists.
+- **Passwords are never stored in plain text.** The `PasswordHash` column is intended to store a hashed value, to be implemented properly in Part 2 during API development.
 ## Setup Instructions
 
 1. **Clone the repository**
