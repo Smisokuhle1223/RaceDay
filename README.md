@@ -33,6 +33,15 @@ README.md                 - This file
 The database has six entities: **Users**, **Venues**, **Events**, **Categories**, **Enrolments**, and **Results**. Users hold both Organisers and Participants, distinguished by a `Role` column. An Organiser creates Events at a Venue; each Event has one or more Categories (e.g. distances); Participants enrol in a Category, and each Enrolment can produce one Result once the event has been run.
 
 See `/docs/ERD.png` for the full diagram and `/docs/RaceDay_Schema.sql` for the script that creates and seeds the schema.
+
+## Entity Relationship Summary
+
+- An **Organiser** (User) creates many **Events**.
+- A **Venue** hosts many **Events**.
+- An **Event** has many **Categories** (distances/classes on offer).
+- A **Participant** (User) makes many **Enrolments**.
+- A **Category** receives many **Enrolments**.
+- An **Enrolment** produces at most one **Result**.
 ## Design Assumptions
 
 A few deliberate decisions were made while planning the schema:
