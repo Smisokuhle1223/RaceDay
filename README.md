@@ -98,7 +98,7 @@ A GitHub Actions workflow lives in `.github/workflows/` and validates the reposi
 
 An unlisted YouTube video walking through the planning documents, ERD decisions, endpoint plan choices, and the SQL script running live in SSMS:
 
-**Video link:** _[Insert unlisted YouTube link here before submission.]_
+**Video link:** https://youtu.be/x2GBVOJnxhA
 
 ## Next Steps (Part 2 Preview)
 
