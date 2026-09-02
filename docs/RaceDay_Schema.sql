@@ -5,7 +5,14 @@
    Matches ERD.png exactly - 6 entities:
    Users, Venues, Events, Categories, Enrolments, Results
    ============================================================ */
-
+/* ============================================================
+   DATA TYPE NOTES
+   - VARCHAR (not NVARCHAR) is used throughout, since the system
+     currently only needs to support English/Latin-script text.
+   - DECIMAL is used for money (EntryFee) and distance (DistanceKM)
+     instead of FLOAT, because DECIMAL stores exact values with no
+     rounding errors - important for money and race distances.
+   ============================================================ */
 IF DB_ID('RaceDayDB') IS NULL
 BEGIN
     CREATE DATABASE RaceDayDB;
