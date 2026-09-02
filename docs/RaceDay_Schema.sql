@@ -129,7 +129,18 @@ GO
    2 Organisers, 2 Participants, 3 Events, categories per
    event, and sample enrolments/results.
    ============================================================ */
+/* ============================================================
+   INDEXES
+   Improve lookup performance on columns that are searched or
+   filtered frequently by the application.
+   ============================================================ */
 
+-- Speeds up login lookups (WHERE Email = ...)
+CREATE INDEX IX_Users_Email ON dbo.Users(Email);
+
+-- Speeds up "browse upcoming events" queries (WHERE EventDate > ...)
+CREATE INDEX IX_Events_EventDate ON dbo.Events(EventDate);
+GO
 -- Users: Organisers and Participants
 INSERT INTO dbo.Users (FullName, Email, PasswordHash, Role) VALUES
 ('Thandeka Nkosi',  'thandeka.nkosi@raceday.co.za',  'hashed_pw_001', 'Organiser'),
