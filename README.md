@@ -55,8 +55,7 @@ A GitHub Actions workflow lives in `.github/workflows/` and validates the reposi
 
 **Successful build screenshot:**
 
-_[Insert screenshot of a green CI/CD build here before submission.]_
-
+![CI/CD Successful Build](docs/ci-success-screenshot.png)
 ## Video Presentation
 
 An unlisted YouTube video walking through the planning documents, ERD decisions, endpoint plan choices, and the SQL script running live in SSMS:
