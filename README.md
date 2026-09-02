@@ -99,3 +99,7 @@ A GitHub Actions workflow lives in `.github/workflows/` and validates the reposi
 An unlisted YouTube video walking through the planning documents, ERD decisions, endpoint plan choices, and the SQL script running live in SSMS:
 
 **Video link:** _[Insert unlisted YouTube link here before submission.]_
+
+## Next Steps (Part 2 Preview)
+
+Part 2 will build the RESTful API described in `/docs/API_Endpoint_Plan.md` on top of this schema — implementing authentication (registration/login with hashed passwords), role-based access control, and the full CRUD logic for Events, Categories, Enrolments, and Results.
