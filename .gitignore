@@ -1,0 +1,17 @@
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE settings
+.vscode/
+.idea/
+
+# Environment variables (added ahead of Part 2 API work)
+.env
+
+# Node.js (added ahead of Part 2, in case an npm-based API is used)
+node_modules/
+
+# Build output
+dist/
+build/
