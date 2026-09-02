@@ -35,3 +35,12 @@ FROM dbo.Enrolments e
 JOIN dbo.Users u ON e.ParticipantID = u.UserID
 JOIN dbo.Categories c ON e.CategoryID = c.CategoryID;
 ```
+
+## Sample sorting query (browsing upcoming events)
+
+Participants browsing events would want them shown soonest-first, not in random insert order:
+
+```sql
+SELECT * FROM dbo.Events
+ORDER BY EventDate ASC;
+```
