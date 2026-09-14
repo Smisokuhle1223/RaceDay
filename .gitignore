@@ -15,3 +15,9 @@ node_modules/
 # Build output
 dist/
 build/
+
+# Visual Studio / .NET
+RaceDayAPI/.vs/
+**/bin/
+**/obj/
+*.user
