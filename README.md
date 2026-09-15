@@ -30,9 +30,26 @@ README.md                 - This file
 
 ## Database
 
-The database has six entities: **Users**, **Venues**, **Events**, **Categories**, **Enrolments**, and **Results**. Users hold both Organisers and Participants, distinguished by a `Role` column. An Organiser creates Events at a Venue; each Event has one or more Categories (e.g. distances); Participants enrol in a Category, and each Enrolment can produce one Result once the event has been run.
+   This creates the `RaceDayAPI_DB` database from the C# model classes (Code-First).
+5. Run the project (F5 or the green Run button). Swagger UI opens automatically at `/swagger`, where every endpoint can be viewed and tested directly in the browser.
 
-See `/docs/ERD.png` for the full diagram and `/docs/RaceDay_Schema.sql` for the script that creates and seeds the schema.
+### Running the Unit Tests
+
+1. Open Test Explorer (Test > Test Explorer).
+2. Click "Run All Tests."
+3. All tests should pass, covering registration/login, event management by role, role rejection, and enrolments.
+
+### API CI/CD
+
+The same GitHub Actions workflow used in Part 1 now also builds the full solution and runs all unit tests on every push, in addition to the original file-structure checks.
+
+**Successful build screenshot (Part 2):**
+
+![CI/CD Build and Test Success](docs/ci-success-part2.png)
+
+### Part 2 Video Link
+
+**Video link:** _[Insert unlisted YouTube link here before submission.]_
 
 ## Entity Relationship Summary
 
@@ -100,6 +117,13 @@ An unlisted YouTube video walking through the planning documents, ERD decisions,
 
 **Video link:** https://youtu.be/x2GBVOJnxhA
 
-## Next Steps (Part 2 Preview)
+## Part 2 — RESTful API
 
-Part 2 will build the RESTful API described in `/docs/API_Endpoint_Plan.md` on top of this schema — implementing authentication (registration/login with hashed passwords), role-based access control, and the full CRUD logic for Events, Categories, Enrolments, and Results.
+The RaceDay API is built with ASP.NET Core Web API (C#, .NET 9.0), using Entity Framework Core with the Code-First approach. It implements every endpoint from the Part 1 plan in `/docs/API_Endpoint_Plan.md`, with session-based role authentication for Organisers and Participants.
+
+### API Setup Instructions
+
+1. Open `RaceDayAPI/RaceDayAPI.sln` in Visual Studio 2022.
+2. Ensure SQL Server (Express or otherwise) is running locally.
+3. Update the connection string in `RaceDayAPI/RaceDayAPI/appsettings.json` if your SQL Server instance name differs from `.\SQLEXPRESS`.
+4. Open the Package Manager Console (Tools > NuGet Package Manager > Package Manager Console), set the Default Project to `RaceDayAPI`, and run:
