@@ -52,3 +52,23 @@ jobs:
             exit 1
           fi
           echo "README.md found"
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore RaceDayAPI/RaceDayAPI.sln
+
+      - name: Build solution
+        run: dotnet build RaceDayAPI/RaceDayAPI.sln --no-restore --configuration Release
+
+      - name: Run unit tests
+        run: dotnet test RaceDayAPI/RaceDayAPI.sln --no-build --configuration Release --verbosity normal
