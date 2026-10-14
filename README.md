@@ -49,7 +49,7 @@ The same GitHub Actions workflow used in Part 1 now also builds the full solutio
 
 ### Part 2 Video Link
 
-**Video link:** _[Insert unlisted YouTube link here before submission.]_
+**Video link:** https://youtu.be/n89eyX63QWQ
 
 ## Entity Relationship Summary
 
