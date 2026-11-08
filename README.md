@@ -182,3 +182,10 @@ The GitHub Actions workflow builds the whole solution, runs the unit tests, buil
 ### Part 3 Video Link
 
 **Video link:** _[Insert unlisted YouTube link here before submission.]_
+
+## Troubleshooting
+
+- **"We couldn't reach the RaceDay service":** the API is not running, or `ApiSettings:BaseUrl` does not match the API address.
+- **Docker container cannot reach the API:** start the API with `--urls "http://0.0.0.0:5285"` and allow it through the Windows firewall.
+- **Images fail to upload:** check the Azure Storage connection string is in user secrets and the `raceday-images` container exists.
+- **SQL Server error 26:** start the SQL Server (SQLEXPRESS) and SQL Server Browser services.
