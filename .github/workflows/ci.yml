@@ -72,3 +72,8 @@ jobs:
 
       - name: Run unit tests
         run: dotnet test RaceDayAPI/RaceDayAPI.sln --no-build --configuration Release --verbosity normal
+      - name: Build MVC project
+        run: dotnet build RaceDayAPI/RaceDayWeb/RaceDayWeb.csproj --configuration Release
+
+      - name: Build Docker image
+        run: docker build -t raceday-web RaceDayAPI/RaceDayWeb
