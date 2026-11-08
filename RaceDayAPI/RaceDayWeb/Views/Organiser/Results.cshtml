@@ -1,0 +1,54 @@
+﻿@model List<EnrolmentRow>
+@{
+    ViewData["Title"] = "Results";
+    int eventId = ViewBag.EventID;
+    string eventName = ViewBag.EventName;
+    var active = Model.Where(x => x.Status != "Cancelled").ToList();
+}
+
+<a asp-action="Events" class="text-decoration-none">&larr; Back to my events</a>
+<h2 class="rd-heading mt-2 mb-1">Results: @eventName</h2>
+<p class="text-muted">Enter each participant's finish time and position, then publish. Use DNF or DNS for those who didn't finish or start.</p>
+
+@if (!active.Any())
+{
+    <div class="rd-card p-4 text-muted">There are no enrolled participants to capture results for.</div>
+}
+else
+{
+    @foreach (var r in active)
+    {
+        var existingTime = r.FinishTime.HasValue ? r.FinishTime.Value.ToString(@"hh\:mm\:ss") : "";
+        var current = r.ResultStatus ?? "Finished";
+        <div class="rd-card p-3 mb-2">
+            <form asp-action="SaveResult" method="post" class="row g-2 align-items-end">
+                <input type="hidden" name="EnrolmentID" value="@r.EnrolmentID" />
+                <input type="hidden" name="EventID" value="@eventId" />
+                <input type="hidden" name="ResultID" value="@r.ResultID" />
+                <div class="col-md-3">
+                    <strong>@r.ParticipantName</strong>
+                    <div class="small text-muted">@r.CategoryName</div>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Status</label>
+                    <select name="Status" class="form-select">
+                        <option value="Finished" selected="@(current == "Finished")">Finished</option>
+                        <option value="DNF" selected="@(current == "DNF")">DNF</option>
+                        <option value="DNS" selected="@(current == "DNS")">DNS</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Finish time</label>
+                    <input name="FinishTime" class="form-control" placeholder="hh:mm:ss" value="@existingTime" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Position</label>
+                    <input name="Position" type="number" min="1" class="form-control" value="@r.Position" />
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-rd">@(r.ResultID.HasValue ? "Update result" : "Publish result")</button>
+                </div>
+            </form>
+        </div>
+    }
+}

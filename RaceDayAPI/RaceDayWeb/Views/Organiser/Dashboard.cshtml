@@ -1,0 +1,62 @@
+﻿@model DashboardData
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="rd-heading mb-0">Organiser dashboard</h2>
+    <a class="btn btn-rd" asp-action="CreateEvent">+ New event</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="rd-card rd-stat"><div class="num">@Model.TotalEvents</div><div class="label">Events created</div></div></div>
+    <div class="col-md-4"><div class="rd-card rd-stat"><div class="num">@Model.TotalEnrolments</div><div class="label">Total enrolments</div></div></div>
+    <div class="col-md-4"><div class="rd-card rd-stat"><div class="num">@Model.UpcomingEvents.Count</div><div class="label">Upcoming events</div></div></div>
+</div>
+
+<h3 class="rd-heading mb-2">Upcoming dates</h3>
+@if (!Model.UpcomingEvents.Any())
+{
+    <div class="rd-card p-4 text-muted mb-4">No upcoming events yet. Create one to get started.</div>
+}
+else
+{
+    <div class="rd-card p-3 mb-4">
+        @foreach (var e in Model.UpcomingEvents)
+        {
+            <div class="d-flex justify-content-between border-bottom py-2">
+                <span><strong>@e.EventName</strong> <span class="badge rd-type-badge">@e.EventType</span></span>
+                <span class="text-muted">@e.EventDate.ToString("dddd, dd MMM yyyy HH:mm")</span>
+            </div>
+        }
+    </div>
+}
+
+<h3 class="rd-heading mb-2">All your events</h3>
+@if (!Model.Events.Any())
+{
+    <div class="rd-card p-4 text-muted">You haven't created any events yet.</div>
+}
+else
+{
+    <div class="rd-card p-0 overflow-hidden">
+        <table class="table mb-0 align-middle">
+            <thead><tr><th>Event</th><th>Date</th><th>Venue</th><th>Categories</th><th>Enrolments</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var e in Model.Events)
+                {
+                    <tr>
+                        <td>@e.EventName</td>
+                        <td>@e.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@e.VenueName</td>
+                        <td>@e.CategoryCount</td>
+                        <td><strong>@e.TotalEnrolments</strong></td>
+                        <td class="text-end">
+                            <a class="btn btn-rd-outline btn-sm" asp-action="Enrolments" asp-route-eventId="@e.EventID">Enrolments</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

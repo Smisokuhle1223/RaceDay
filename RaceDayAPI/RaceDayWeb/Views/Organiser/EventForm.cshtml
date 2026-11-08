@@ -1,0 +1,73 @@
+﻿@model EventFormModel
+@{
+    var isEdit = Model.EventID.HasValue;
+    ViewData["Title"] = isEdit ? "Edit event" : "Create event";
+    var formAction = isEdit ? "EditEvent" : "CreateEvent";
+    var venues = (List<VenueItem>)ViewBag.Venues;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="rd-card p-4">
+            <h2 class="rd-heading mb-3">@ViewData["Title"]</h2>
+            <form asp-action="@formAction" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                <input type="hidden" asp-for="EventID" />
+
+                <div class="mb-3">
+                    <label asp-for="EventName" class="form-label"></label>
+                    <input asp-for="EventName" class="form-control" />
+                    <span asp-validation-for="EventName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EventDate" class="form-label"></label>
+                        <input asp-for="EventDate" class="form-control" />
+                        <span asp-validation-for="EventDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EventType" class="form-label"></label>
+                        <select asp-for="EventType" class="form-select">
+                            <option value="Run">Run</option>
+                            <option value="Walk">Walk</option>
+                            <option value="Cycle">Cycle</option>
+                        </select>
+                        <span asp-validation-for="EventType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VenueID" class="form-label"></label>
+                    <select asp-for="VenueID" class="form-select">
+                        <option value="0">Choose a venue</option>
+                        @foreach (var v in venues)
+                        {
+                            <option value="@v.VenueID">@v.VenueName, @v.City, @v.Province</option>
+                        }
+                    </select>
+                    <span asp-validation-for="VenueID" class="text-danger"></span>
+                    <div class="form-text">Distances are set per category, on the Categories page after you save.</div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Banner" class="form-label"></label>
+                    @if (!string.IsNullOrEmpty(Model.ExistingBannerUrl))
+                    {
+                        <div class="mb-2"><img src="@Model.ExistingBannerUrl" alt="Current banner" style="max-height:120px;border-radius:8px" /></div>
+                    }
+                    <input asp-for="Banner" type="file" accept="image/*" class="form-control" />
+                    <div class="form-text">JPG, PNG, GIF or WEBP, up to 5MB.</div>
+                </div>
+                <button type="submit" class="btn btn-rd">@(isEdit ? "Save changes" : "Create event")</button>
+                <a asp-action="Events" class="btn btn-rd-outline ms-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

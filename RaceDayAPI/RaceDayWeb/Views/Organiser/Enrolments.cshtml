@@ -1,0 +1,36 @@
+﻿@model List<EnrolmentRow>
+@{
+    ViewData["Title"] = "Enrolments";
+    int eventId = ViewBag.EventID;
+    string eventName = ViewBag.EventName;
+}
+
+<a asp-action="Events" class="text-decoration-none">&larr; Back to my events</a>
+<div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+    <h2 class="rd-heading mb-0">Enrolments: @eventName</h2>
+    <a class="btn btn-rd" asp-action="Results" asp-route-eventId="@eventId">Enter results</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="rd-card p-4 text-muted">Nobody has enrolled yet.</div>
+}
+else
+{
+    <div class="rd-card p-0 overflow-hidden">
+        <table class="table mb-0 align-middle">
+            <thead><tr><th>Participant</th><th>Category</th><th>Enrolled on</th><th>Status</th></tr></thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.ParticipantName</td>
+                        <td>@r.CategoryName</td>
+                        <td>@r.EnrolmentDate.ToString("dd MMM yyyy")</td>
+                        <td><span class="badge status-badge status-@r.Status.ToLower()">@r.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
