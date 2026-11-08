@@ -1,0 +1,46 @@
+﻿@model List<MyEnrolment>
+@{
+    ViewData["Title"] = "My events";
+}
+
+<h2 class="rd-heading mb-3">My events</h2>
+
+@if (!Model.Any())
+{
+    <div class="rd-card p-5 text-center">
+        <h4 class="rd-heading">You haven't entered any events yet</h4>
+        <p class="text-muted">Find a race and enter it in a few clicks.</p>
+        <a class="btn btn-rd" asp-controller="Events" asp-action="Index">Browse events</a>
+    </div>
+}
+else
+{
+    <div class="rd-card p-0 overflow-hidden">
+        <table class="table mb-0 align-middle">
+            <thead><tr><th>Event</th><th>Category</th><th>Date</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="text-decoration-none fw-semibold" asp-controller="Events" asp-action="Details" asp-route-id="@e.EventID">@e.EventName</a>
+                            <span class="badge rd-type-badge ms-1">@e.EventType</span>
+                        </td>
+                        <td>@e.CategoryName</td>
+                        <td>@e.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td><span class="badge status-badge status-@e.Status.ToLower()">@e.Status</span></td>
+                        <td class="text-end">
+                            @if (e.Status != "Cancelled")
+                            {
+                                <form asp-action="CancelEnrolment" method="post" onsubmit="return confirm('Cancel this enrolment?');">
+                                    <input type="hidden" name="id" value="@e.EnrolmentID" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

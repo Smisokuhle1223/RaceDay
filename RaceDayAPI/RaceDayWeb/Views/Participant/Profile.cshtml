@@ -1,0 +1,50 @@
+﻿@model ProfileFormModel
+@{
+    ViewData["Title"] = "My profile";
+}
+
+<div class="row g-4 justify-content-center">
+    <div class="col-md-4">
+        <div class="rd-card p-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+            {
+                <img class="rd-avatar mb-3" src="@Model.ProfilePictureUrl" alt="Profile picture" />
+            }
+            else
+            {
+                <div class="rd-avatar mb-3 mx-auto d-flex align-items-center justify-content-center bg-light text-muted" style="font-size:2rem">
+                    @(Model.FullName.Length > 0 ? Model.FullName.Substring(0, 1).ToUpper() : "?")
+                </div>
+            }
+            <form asp-action="UploadPicture" method="post" enctype="multipart/form-data">
+                <input type="file" name="picture" accept="image/*" class="form-control form-control-sm mb-2" />
+                <button type="submit" class="btn btn-rd btn-sm w-100">Upload picture</button>
+                <div class="form-text">JPG, PNG, GIF or WEBP, up to 5MB.</div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="rd-card p-4">
+            <h2 class="rd-heading mb-3">My details</h2>
+            <form asp-action="Profile" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                <input type="hidden" asp-for="ProfilePictureUrl" />
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-rd">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

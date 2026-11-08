@@ -1,0 +1,34 @@
+﻿@model List<MyResult>
+@{
+    ViewData["Title"] = "My results";
+}
+
+<h2 class="rd-heading mb-3">My results</h2>
+
+@if (!Model.Any())
+{
+    <div class="rd-card p-5 text-center">
+        <h4 class="rd-heading">No results yet</h4>
+        <p class="text-muted mb-0">Your results will show up here once an organiser publishes them after an event.</p>
+    </div>
+}
+else
+{
+    <div class="rd-card p-0 overflow-hidden">
+        <table class="table mb-0 align-middle">
+            <thead><tr><th>Event</th><th>Date</th><th>Category</th><th>Finish time</th><th>Position</th></tr></thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@r.EventName</td>
+                        <td>@r.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@r.CategoryName</td>
+                        <td>@(r.FinishTime.HasValue? r.FinishTime.Value.ToString(@"hh\:mm\:ss") : "-")</td>
+                        <td>@r.PositionText</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
