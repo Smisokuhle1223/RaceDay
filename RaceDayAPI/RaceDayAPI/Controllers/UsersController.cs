@@ -35,7 +35,8 @@ namespace RaceDayAPI.Controllers
                 user.FullName,
                 user.Email,
                 user.Role,
-                user.CreatedAt
+                user.CreatedAt,
+                user.ProfilePictureUrl
             });
         }
 
@@ -69,11 +70,12 @@ namespace RaceDayAPI.Controllers
                 user.UserID,
                 user.FullName,
                 user.Email,
-                user.Role
+                user.Role,
+                user.ProfilePictureUrl
             });
         }
 
-        // GET /api/users/{id} - public profile lookup (e.g. organiser name on an event listing)
+        // GET /api/users/{id} - public profile lookup
         [HttpGet("api/users/{id}")]
         public async Task<IActionResult> GetPublicProfile(int id)
         {
@@ -87,7 +89,8 @@ namespace RaceDayAPI.Controllers
             {
                 user.UserID,
                 user.FullName,
-                user.Role
+                user.Role,
+                user.ProfilePictureUrl
             });
         }
     }
