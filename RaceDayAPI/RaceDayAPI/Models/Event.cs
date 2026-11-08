@@ -18,6 +18,13 @@ namespace RaceDayAPI.Models
         [Required]
         public DateTime EventDate { get; set; }
 
+        [Required]
+        [MaxLength(20)]
+        public string EventType { get; set; } = "Run"; // "Run", "Walk" or "Cycle"
+
+        [MaxLength(500)]
+        public string? BannerUrl { get; set; }
+
         // Foreign key to Venue
         [Required]
         public int VenueID { get; set; }

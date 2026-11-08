@@ -24,6 +24,9 @@ namespace RaceDayAPI.Models
         [Required]
         [MaxLength(20)]
         public string Role { get; set; } = "Participant"; // "Organiser" or "Participant"
+        
+        [MaxLength(500)]
+        public string? ProfilePictureUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
