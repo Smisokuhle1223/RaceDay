@@ -127,3 +127,58 @@ The RaceDay API is built with ASP.NET Core Web API (C#, .NET 9.0), using Entity 
 2. Ensure SQL Server (Express or otherwise) is running locally.
 3. Update the connection string in `RaceDayAPI/RaceDayAPI/appsettings.json` if your SQL Server instance name differs from `.\SQLEXPRESS`.
 4. Open the Package Manager Console (Tools > NuGet Package Manager > Package Manager Console), set the Default Project to `RaceDayAPI`, and run:
+## Part 3: ASP.NET Core MVC Web Application
+
+The RaceDay web interface is an ASP.NET Core MVC application (`RaceDayAPI/RaceDayWeb`). It contains no database access or business logic. Every operation goes through the Part 2 API, which also handles image uploads to Azure Blob Storage.
+
+### The two roles
+
+- **Organiser:** dashboard with event totals and upcoming dates, create/edit/delete events (with banner upload), manage categories, view enrolments per event, and capture and publish results.
+- **Participant:** browse and filter events, view event details, enrol in a category, see their own enrolments with colour-coded status (green Confirmed, amber Pending, red Cancelled), view their results (for example "3rd out of 12 finishers"), and update their profile and profile picture.
+
+### MVC structure
+
+- `Controllers/`: Account, Home, Events, Organiser and Participant controllers.
+- `Services/ApiClient.cs`: the only class that talks to the API. It forwards the user's API session so roles are enforced by the API.
+- `Filters/RequireLoginAttribute.cs`: redirects unauthenticated users to login and wrong-role users to an access denied page.
+- `Views/`: Razor views grouped by controller, sharing one layout and one RaceDay stylesheet.
+
+### Blob Storage
+
+Banner and profile images are posted from the MVC app to the API, which uploads them to an Azure Blob Storage container and saves the URL in the database. The MVC app never talks to Azure directly.
+
+### Running locally
+
+1. Apply the API migrations (see the Part 2 setup instructions).
+2. Store the Azure Storage connection string in user secrets for `RaceDayAPI` (right-click the project, Manage User Secrets):
+   `{ "AzureStorage": { "ConnectionString": "<your connection string>" } }`
+3. In Visual Studio, set both `RaceDayAPI` and `RaceDayWeb` as startup projects and run.
+
+### Running with Docker
+
+Start the API so the container can reach it:
+
+```
+cd RaceDayAPI/RaceDayAPI
+dotnet run --urls "http://0.0.0.0:5285"
+```
+
+Then build and run the web app container:
+
+```
+cd RaceDayAPI/RaceDayWeb
+docker build -t raceday-web .
+docker run --rm -p 8080:8080 -e ApiSettings__BaseUrl=http://host.docker.internal:5285/ raceday-web
+```
+
+Open `http://localhost:8080`.
+
+### Part 3 CI/CD
+
+The GitHub Actions workflow builds the whole solution, runs the unit tests, builds the MVC project and builds the Docker image on every push.
+
+![Part 3 CI build](docs/ci-success-part3.png)
+
+### Part 3 Video Link
+
+**Video link:** _[Insert unlisted YouTube link here before submission.]_
