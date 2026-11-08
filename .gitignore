@@ -21,3 +21,4 @@ RaceDayAPI/.vs/
 **/bin/
 **/obj/
 *.user
+.vs/
