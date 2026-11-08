@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RaceDayAPI.Data;
+using RaceDayAPI.DTOs;
 using RaceDayAPI.Filters;
 using RaceDayAPI.Services;
 
@@ -32,9 +33,10 @@ namespace RaceDayAPI.Controllers
         // POST /api/events/{eventId}/banner - Organiser who owns the event
         [RequireRole("Organiser")]
         [HttpPost("api/events/{eventId}/banner")]
-        public async Task<IActionResult> UploadBanner(int eventId, [FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadBanner(int eventId, [FromForm] ImageUploadDto dto)
         {
-            var error = ValidateImage(file);
+            var error = ValidateImage(dto.File);
             if (error != null) return BadRequest(new { message = error });
 
             if (!_blob.IsConfigured)
@@ -49,7 +51,7 @@ namespace RaceDayAPI.Controllers
 
             try
             {
-                ev.BannerUrl = await _blob.UploadImageAsync(file, "banners");
+                ev.BannerUrl = await _blob.UploadImageAsync(dto.File, "banners");
                 await _context.SaveChangesAsync();
                 return Ok(new { ev.BannerUrl });
             }
@@ -62,9 +64,10 @@ namespace RaceDayAPI.Controllers
         // POST /api/users/profile/picture - any logged-in user
         [RequireRole("Organiser", "Participant")]
         [HttpPost("api/users/profile/picture")]
-        public async Task<IActionResult> UploadProfilePicture([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadProfilePicture([FromForm] ImageUploadDto dto)
         {
-            var error = ValidateImage(file);
+            var error = ValidateImage(dto.File);
             if (error != null) return BadRequest(new { message = error });
 
             if (!_blob.IsConfigured)
@@ -76,7 +79,7 @@ namespace RaceDayAPI.Controllers
 
             try
             {
-                user.ProfilePictureUrl = await _blob.UploadImageAsync(file, "profiles");
+                user.ProfilePictureUrl = await _blob.UploadImageAsync(dto.File, "profiles");
                 await _context.SaveChangesAsync();
                 return Ok(new { user.ProfilePictureUrl });
             }
