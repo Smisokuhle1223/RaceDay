@@ -13,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RaceDayAPI.Data.RaceDayDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RaceDayConnection")));
+builder.Services.AddSingleton<RaceDayAPI.Services.BlobStorageService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

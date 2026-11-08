@@ -16,6 +16,10 @@ namespace RaceDayAPI.DTOs
 
         [Required]
         public int VenueID { get; set; }
+
+        [Required]
+        [RegularExpression("^(Run|Walk|Cycle)$", ErrorMessage = "EventType must be Run, Walk or Cycle.")]
+        public string EventType { get; set; } = "Run";
     }
 
     public class UpdateEventDto
@@ -32,5 +36,9 @@ namespace RaceDayAPI.DTOs
 
         [Required]
         public int VenueID { get; set; }
+
+        [Required]
+        [RegularExpression("^(Run|Walk|Cycle)$", ErrorMessage = "EventType must be Run, Walk or Cycle.")]
+        public string EventType { get; set; } = "Run";
     }
 }

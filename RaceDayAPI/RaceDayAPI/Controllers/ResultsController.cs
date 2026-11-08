@@ -108,20 +108,20 @@ namespace RaceDayAPI.Controllers
             }
 
             var results = await _context.Results
-                .Include(r => r.Enrolment)
-                .ThenInclude(e => e!.Category)
-                .ThenInclude(c => c!.Event)
-                .Where(r => r.Enrolment!.ParticipantID == userId)
-                .Select(r => new
-                {
-                    r.ResultID,
-                    r.FinishTime,
-                    r.Position,
-                    r.Status,
-                    EventName = r.Enrolment!.Category!.Event!.EventName,
-                    CategoryName = r.Enrolment!.Category!.CategoryName
-                })
-                .ToListAsync();
+    .Where(r => r.Enrolment!.ParticipantID == userId)
+    .Select(r => new
+    {
+        r.ResultID,
+        r.FinishTime,
+        r.Position,
+        r.Status,
+        EventName = r.Enrolment!.Category!.Event!.EventName,
+        EventDate = r.Enrolment!.Category!.Event!.EventDate,
+        CategoryName = r.Enrolment!.Category!.CategoryName,
+        TotalFinishers = _context.Results.Count(x =>
+            x.Enrolment!.CategoryID == r.Enrolment!.CategoryID && x.Status == "Finished")
+    })
+    .ToListAsync();
 
             return Ok(results);
         }

@@ -18,13 +18,22 @@ namespace RaceDayAPI.Controllers
             _context = context;
         }
 
-        // GET /api/events - public, anyone can browse
+        // GET /api/events - public, with optional filters
         [HttpGet]
-        public async Task<IActionResult> GetEvents()
+        public async Task<IActionResult> GetEvents(string? eventType = null, string? search = null, bool upcomingOnly = false)
         {
-            var events = await _context.Events
-                .Include(e => e.Venue)
-                .Include(e => e.Organiser)
+            var query = _context.Events.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(eventType))
+                query = query.Where(e => e.EventType == eventType);
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(e => e.EventName.Contains(search) || e.Venue!.City.Contains(search));
+
+            if (upcomingOnly)
+                query = query.Where(e => e.EventDate >= DateTime.Now);
+
+            var events = await query
                 .OrderBy(e => e.EventDate)
                 .Select(e => new
                 {
@@ -32,7 +41,11 @@ namespace RaceDayAPI.Controllers
                     e.EventName,
                     e.Description,
                     e.EventDate,
+                    e.EventType,
+                    e.BannerUrl,
                     VenueName = e.Venue!.VenueName,
+                    City = e.Venue!.City,
+                    Province = e.Venue!.Province,
                     OrganiserName = e.Organiser!.FullName
                 })
                 .ToListAsync();
@@ -45,30 +58,37 @@ namespace RaceDayAPI.Controllers
         public async Task<IActionResult> GetEvent(int id)
         {
             var ev = await _context.Events
-                .Include(e => e.Venue)
-                .Include(e => e.Categories)
-                .FirstOrDefaultAsync(e => e.EventID == id);
+                .Where(e => e.EventID == id)
+                .Select(e => new
+                {
+                    e.EventID,
+                    e.EventName,
+                    e.Description,
+                    e.EventDate,
+                    e.EventType,
+                    e.BannerUrl,
+                    VenueName = e.Venue!.VenueName,
+                    City = e.Venue!.City,
+                    Province = e.Venue!.Province,
+                    OrganiserName = e.Organiser!.FullName,
+                    Categories = e.Categories!.Select(c => new
+                    {
+                        c.CategoryID,
+                        c.CategoryName,
+                        c.DistanceKM,
+                        c.EntryFee,
+                        c.MaxParticipants,
+                        EnrolledCount = c.Enrolments!.Count(en => en.Status != "Cancelled")
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
             if (ev == null)
             {
                 return NotFound(new { message = "Event not found." });
             }
 
-            return Ok(new
-            {
-                ev.EventID,
-                ev.EventName,
-                ev.Description,
-                ev.EventDate,
-                Venue = ev.Venue!.VenueName,
-                Categories = ev.Categories!.Select(c => new
-                {
-                    c.CategoryID,
-                    c.CategoryName,
-                    c.DistanceKM,
-                    c.EntryFee
-                })
-            });
+            return Ok(ev);
         }
 
         // POST /api/events - Organiser only
@@ -89,6 +109,7 @@ namespace RaceDayAPI.Controllers
                 EventName = dto.EventName,
                 Description = dto.Description,
                 EventDate = dto.EventDate,
+                EventType = dto.EventType,
                 VenueID = dto.VenueID,
                 OrganiserID = organiserId,
                 CreatedAt = DateTime.Now
@@ -100,7 +121,7 @@ namespace RaceDayAPI.Controllers
             return StatusCode(201, newEvent);
         }
 
-        // PUT /api/events/{id} - Organiser only, and must own the event
+        // PUT /api/events/{id} - Organiser only, must own the event
         [RequireRole("Organiser")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(int id, UpdateEventDto dto)
@@ -126,13 +147,14 @@ namespace RaceDayAPI.Controllers
             ev.EventName = dto.EventName;
             ev.Description = dto.Description;
             ev.EventDate = dto.EventDate;
+            ev.EventType = dto.EventType;
             ev.VenueID = dto.VenueID;
 
             await _context.SaveChangesAsync();
             return Ok(ev);
         }
 
-        // DELETE /api/events/{id} - Organiser only, and must own the event
+        // DELETE /api/events/{id} - Organiser only, must own the event
         [RequireRole("Organiser")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(int id)

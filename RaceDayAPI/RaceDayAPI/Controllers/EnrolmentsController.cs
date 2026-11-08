@@ -67,18 +67,20 @@ namespace RaceDayAPI.Controllers
             int participantId = HttpContext.Session.GetInt32("UserID")!.Value;
 
             var enrolments = await _context.Enrolments
-                .Include(e => e.Category)
-                .ThenInclude(c => c!.Event)
-                .Where(e => e.ParticipantID == participantId)
-                .Select(e => new
-                {
-                    e.EnrolmentID,
-                    e.Status,
-                    e.EnrolmentDate,
-                    CategoryName = e.Category!.CategoryName,
-                    EventName = e.Category!.Event!.EventName
-                })
-                .ToListAsync();
+    .Where(e => e.ParticipantID == participantId)
+    .OrderByDescending(e => e.EnrolmentDate)
+    .Select(e => new
+    {
+        e.EnrolmentID,
+        e.Status,
+        e.EnrolmentDate,
+        EventID = e.Category!.EventID,
+        EventName = e.Category!.Event!.EventName,
+        EventDate = e.Category!.Event!.EventDate,
+        EventType = e.Category!.Event!.EventType,
+        CategoryName = e.Category!.CategoryName
+    })
+    .ToListAsync();
 
             return Ok(enrolments);
         }
@@ -101,18 +103,20 @@ namespace RaceDayAPI.Controllers
             }
 
             var enrolments = await _context.Enrolments
-                .Include(e => e.Participant)
-                .Include(e => e.Category)
-                .Where(e => e.Category!.EventID == eventId)
-                .Select(e => new
-                {
-                    e.EnrolmentID,
-                    ParticipantName = e.Participant!.FullName,
-                    CategoryName = e.Category!.CategoryName,
-                    e.Status,
-                    e.EnrolmentDate
-                })
-                .ToListAsync();
+    .Where(e => e.Category!.EventID == eventId)
+    .Select(e => new
+    {
+        e.EnrolmentID,
+        ParticipantName = e.Participant!.FullName,
+        CategoryName = e.Category!.CategoryName,
+        e.Status,
+        e.EnrolmentDate,
+        ResultID = e.Result != null ? (int?)e.Result.ResultID : null,
+        FinishTime = e.Result != null ? e.Result.FinishTime : null,
+        Position = e.Result != null ? e.Result.Position : null,
+        ResultStatus = e.Result != null ? e.Result.Status : null
+    })
+    .ToListAsync();
 
             return Ok(enrolments);
         }
