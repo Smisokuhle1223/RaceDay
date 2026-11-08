@@ -181,7 +181,7 @@ The GitHub Actions workflow builds the whole solution, runs the unit tests, buil
 
 ### Part 3 Video Link
 
-**Video link:** _[Insert unlisted YouTube link here before submission.]_
+**Video link:** https://youtu.be/ll-nUujaT7s 
 
 ## Troubleshooting
 
