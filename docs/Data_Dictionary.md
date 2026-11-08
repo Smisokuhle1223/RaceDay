@@ -67,3 +67,10 @@ Full column listing for all six tables in the RaceDay database, matching `ERD.pn
 | Position | INT | Finishing position, if applicable. |
 | Status | VARCHAR(20) | 'Finished', 'DNF' (Did Not Finish), or 'DNS' (Did Not Start). |
 | RecordedAt | DATETIME | When the result was captured. |
+## Part 3 additions
+
+| Table | Column | Type | Description |
+|---|---|---|---|
+| Events | EventType | VARCHAR(20) | Run, Walk or Cycle. Used for filtering and badges in the web app. |
+| Events | BannerUrl | VARCHAR(500), nullable | Azure Blob Storage URL of the event banner image. |
+| Users | ProfilePictureUrl | VARCHAR(500), nullable | Azure Blob Storage URL of the user's profile picture. |
