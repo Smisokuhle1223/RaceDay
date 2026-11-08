@@ -1,0 +1,67 @@
+﻿@model EventDetail
+@{
+    ViewData["Title"] = Model.EventName;
+    var role = Context.Session.GetString("Role");
+}
+
+<a asp-action="Index" class="text-decoration-none">&larr; Back to events</a>
+
+<div class="rd-card mt-3 mb-4">
+    @if (!string.IsNullOrEmpty(Model.BannerUrl))
+    {
+        <img class="rd-event-banner" style="height:260px" src="@Model.BannerUrl" alt="@Model.EventName banner" />
+    }
+    else
+    {
+        <div class="rd-event-banner-placeholder" style="height:260px">@Model.EventType</div>
+    }
+    <div class="p-4">
+        <span class="badge rd-type-badge mb-2">@Model.EventType</span>
+        <h2 class="mb-1">@Model.EventName</h2>
+        <p class="text-muted mb-2">
+            @Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm") &middot;
+            @Model.VenueName, @Model.City, @Model.Province
+        </p>
+        <p class="mb-1">@Model.Description</p>
+        <p class="small text-muted mb-0">Organised by @Model.OrganiserName</p>
+    </div>
+</div>
+
+<h3 class="rd-heading mb-3">Categories</h3>
+
+@if (!Model.Categories.Any())
+{
+    <div class="rd-card p-4 text-muted">The organiser hasn't added any categories yet.</div>
+}
+else
+{
+    <div class="rd-card p-0 overflow-hidden">
+        <table class="table mb-0 align-middle">
+            <thead>
+                <tr><th>Category</th><th>Distance</th><th>Entry fee</th><th>Spots left</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Categories)
+                {
+                    var spotsLeft = c.MaxParticipants - c.EnrolledCount;
+                    <tr>
+                        <td>@c.CategoryName</td>
+                        <td>@c.DistanceKM km</td>
+                        <td>R @c.EntryFee.ToString("0.00")</td>
+                        <td>@(spotsLeft > 0 ? spotsLeft.ToString() : "Full")</td>
+                        <td class="text-end">
+                            @if (role == "Participant" && spotsLeft > 0)
+                            {
+                                <form asp-action="Enrol" method="post">
+                                    <input type="hidden" name="categoryId" value="@c.CategoryID" />
+                                    <input type="hidden" name="eventId" value="@Model.EventID" />
+                                    <button type="submit" class="btn btn-rd btn-sm">Enrol</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

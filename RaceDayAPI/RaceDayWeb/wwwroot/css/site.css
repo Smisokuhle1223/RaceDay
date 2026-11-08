@@ -1,31 +1,207 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --rd-navy: #0b1f3a;
+    --rd-navy-2: #14305a;
+    --rd-orange: #ff6b1a;
+    --rd-orange-dark: #e55a0d;
+    --rd-bg: #f4f6fa;
+    --rd-green: #1f9d55;
+    --rd-amber: #f5a623;
+    --rd-red: #d64545;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Barlow', 'Segoe UI', Arial, sans-serif;
+    background: var(--rd-bg);
+    color: #1b2433;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+main {
+    flex: 1;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+h1, h2, h3, h4, .rd-heading, .rd-logo {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.rd-navbar {
+    background: var(--rd-navy);
+    border-bottom: 4px solid var(--rd-orange);
+}
+
+    .rd-navbar .nav-link {
+        color: #dbe4f3;
+        font-weight: 500;
+    }
+
+        .rd-navbar .nav-link:hover {
+            color: var(--rd-orange);
+        }
+
+    .rd-navbar .navbar-text {
+        color: #fff;
+    }
+
+.rd-logo {
+    color: #fff !important;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+    .rd-logo span {
+        color: var(--rd-orange);
+    }
+
+.rd-role-badge {
+    background: var(--rd-orange);
+    color: #fff;
+    font-weight: 600;
+}
+
+.navbar-toggler {
+    background: #fff;
+}
+
+.btn-rd {
+    background: var(--rd-orange);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+    .btn-rd:hover {
+        background: var(--rd-orange-dark);
+        color: #fff;
+    }
+
+.btn-rd-outline {
+    border: 2px solid var(--rd-orange);
+    color: var(--rd-orange);
+    background: transparent;
+    font-weight: 600;
+}
+
+    .btn-rd-outline:hover {
+        background: var(--rd-orange);
+        color: #fff;
+    }
+
+.rd-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(11, 31, 58, 0.08);
+    border: none;
+}
+
+.rd-hero {
+    background: linear-gradient(135deg, var(--rd-navy) 0%, var(--rd-navy-2) 60%, var(--rd-orange) 140%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 4rem 2rem;
+}
+
+    .rd-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+    }
+
+.rd-stat {
+    text-align: center;
+    padding: 1.25rem;
+}
+
+    .rd-stat .num {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--rd-orange);
+        line-height: 1;
+    }
+
+    .rd-stat .label {
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        color: #6b7686;
+    }
+
+.rd-event-banner {
+    height: 160px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(135deg, var(--rd-navy), var(--rd-navy-2));
+}
+
+.rd-event-banner-placeholder {
+    height: 160px;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(135deg, var(--rd-navy), var(--rd-orange));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+}
+
+.rd-type-badge {
+    background: var(--rd-navy);
+    color: #fff;
+    font-weight: 500;
+}
+
+.status-badge {
+    color: #fff;
+    font-weight: 600;
+    padding: 0.4em 0.8em;
+    border-radius: 20px;
+}
+
+.status-confirmed {
+    background: var(--rd-green);
+}
+
+.status-pending {
+    background: var(--rd-amber);
+    color: #3a2a00;
+}
+
+.status-cancelled {
+    background: var(--rd-red);
+}
+
+.table thead th {
+    background: var(--rd-navy);
+    color: #fff;
+    border: none;
+    font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--rd-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 26, 0.2);
+}
+
+.rd-footer {
+    background: var(--rd-navy);
+    color: #9fb0cc;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+.rd-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--rd-orange);
 }

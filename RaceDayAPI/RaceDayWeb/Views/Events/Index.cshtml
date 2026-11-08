@@ -1,0 +1,68 @@
+﻿@model EventsIndexViewModel
+@{
+    ViewData["Title"] = "Browse events";
+}
+
+<h2 class="rd-heading mb-3">Find your next race</h2>
+
+<form method="get" class="rd-card p-3 mb-4">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Search</label>
+            <input name="search" value="@Model.Search" class="form-control" placeholder="Event name or city" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Event type</label>
+            <select name="eventType" class="form-select">
+                <option value="">All types</option>
+                <option value="Run" selected="@(Model.EventType == "Run")">Run</option>
+                <option value="Walk" selected="@(Model.EventType == "Walk")">Walk</option>
+                <option value="Cycle" selected="@(Model.EventType == "Cycle")">Cycle</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="upcomingOnly" value="true" id="upc" checked="@Model.UpcomingOnly" />
+                <label class="form-check-label" for="upc">Upcoming only</label>
+            </div>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-rd">Filter</button>
+        </div>
+    </div>
+</form>
+
+@if (!Model.Events.Any())
+{
+    <div class="rd-card p-5 text-center">
+        <h4 class="rd-heading">No events found</h4>
+        <p class="text-muted mb-0">Try changing your filters.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var e in Model.Events)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="rd-card h-100">
+                    @if (!string.IsNullOrEmpty(e.BannerUrl))
+                    {
+                        <img class="rd-event-banner" src="@e.BannerUrl" alt="@e.EventName banner" />
+                    }
+                    else
+                    {
+                        <div class="rd-event-banner-placeholder">@e.EventType</div>
+                    }
+                    <div class="p-3">
+                        <span class="badge rd-type-badge mb-2">@e.EventType</span>
+                        <h4 class="mb-1">@e.EventName</h4>
+                        <div class="text-muted small">@e.EventDate.ToString("dd MMM yyyy, HH:mm")</div>
+                        <div class="text-muted small mb-3">@e.VenueName, @e.City</div>
+                        <a class="btn btn-rd btn-sm" asp-action="Details" asp-route-id="@e.EventID">View details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
