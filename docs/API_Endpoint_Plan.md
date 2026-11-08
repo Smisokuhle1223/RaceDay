@@ -54,3 +54,13 @@ Planned before any API code is written, in line with Part 1 Section B. Covers Au
 | GET | /api/enrolments/{id}/results | Returns the captured result for a specific enrolment, visible only to the participant who owns it or the organiser of the event. | Any (owning participant or event organiser) | None | 200 OK – result. 403 Forbidden. 404 Not Found – no result yet. | |
 | GET | /api/users/{id}/results | Returns a participant's complete performance history — every result they've received across all events they've entered. | Participant (owner) or Organiser | None | 200 OK – array of results. 403 Forbidden. | |
 | PUT | /api/results/{id} | Corrects/updates an already captured result. | Organiser | `{ finishTime, position, status }` | 200 OK – updated result. 403 Forbidden. 404 Not Found. |
+
+## Part 3 additions
+
+| HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
+|---|---|---|---|---|---|
+| GET | /api/venues | Lists venues for the event location dropdown. | None (public) | None | 200 OK – array of venues. |
+| GET | /api/organiser/dashboard | Returns the organiser's event totals, enrolment totals and upcoming events. | Organiser | None | 200 OK – dashboard summary. 401 Unauthorized. 403 Forbidden. |
+| GET | /api/events?eventType=&search=&upcomingOnly= | Browses events with optional type, text and upcoming filters. | None (public) | None | 200 OK – filtered events. |
+| POST | /api/events/{id}/banner | Uploads an event banner image to Azure Blob Storage. | Organiser (owner) | Multipart form with a file field (image, max 5MB) | 200 OK – banner URL. 400 Bad Request – invalid file. 403 Forbidden. 404 Not Found. |
+| POST | /api/users/profile/picture | Uploads the logged-in user's profile picture to Azure Blob Storage. | Any (logged in) | Multipart form with a file field (image, max 5MB) | 200 OK – picture URL. 400 Bad Request – invalid file. |
